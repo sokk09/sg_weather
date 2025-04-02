@@ -7,3 +7,6 @@ This project extracts rainfall data for Singapore from [Singapore's open data po
 <img width="1451" alt="image" src="https://github.com/user-attachments/assets/b5712810-26e0-4668-9407-e44986466720" />
 
 ### Resources
+
+[Postgres Docker Setup](https://www.docker.com/blog/how-to-use-the-postgres-docker-official-image/)
+
