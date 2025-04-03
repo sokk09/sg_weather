@@ -15,14 +15,9 @@ logging.basicConfig(
 logger = logging.getLogger()
 
 class ConfigLoader:
-    _instance = None
-
-    def __new__(cls, pipeline_env_file, docker_env_file):
-        if not cls._instance:
-            cls._instance = super(ConfigLoader, cls).__new__(cls)
-            cls._instance.load_config(pipeline_env_file, docker_env_file)
-        
-        return cls._instance
+    def __init__(self, pipeline_env_file, docker_env_file):
+        self.config = {}
+        self.load_config(pipeline_env_file, docker_env_file)
 
     def load_config(self, pipeline_env_file, docker_env_file):
 
