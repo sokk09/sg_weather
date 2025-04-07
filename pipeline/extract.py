@@ -93,29 +93,41 @@ class Extract:
                 json.dump(data, file, indent=4)
             
         except Exception as e:
-            logger.error("Error saving data to file: {e}")
+            logger.error(f"Error saving data to file: {e}")
             
 
     def extract_and_process_data(self, date:str):
-        stations, readings = self.fetch_data(date)
+        try:
+            stations, readings = self.fetch_data(date)
 
-        if stations is None:
-            logger.error("No stations data found")
-            return None
+            if stations is None:
+                logger.error("No stations data found")
+                raise ValueError("No stations data found")
+            
+            else:
+                self.save_raw_file(stations, type='stations', filename=f'stations_{date}', date=date)
+                logger.info("Raw stations data saved")
+
+            if readings is None:
+                logger.error("No readings data found")
+                raise ValueError("No readings data found")
+
+            
+            else:
+                self.save_raw_file(readings, type='readings', filename=f'readings_{date}', date=date)
+                logger.info("Raw readings data saved")
+
+            return True
         
-        else:
-            self.save_raw_file(stations, type='stations', filename=f'stations_{date}', date=date)
-            logger.info("Raw stations data saved")
+        except ValueError as ve:
+            # This block handles expected errors (e.g., missing data)
+            logger.error(f"Data extraction error: {ve}")
+            return False
 
-        if readings is None:
-            logger.error("No readings data found")
-            return None
-        
-        else:
-            self.save_raw_file(readings, type='readings', filename=f'readings_{date}', date=date)
-            logger.info("Raw readings data saved")
-
-        return True
+        except Exception as e:
+            # Catch any other unexpected errors
+            logger.error(f"An unexpected error occurred during data extraction: {e}")
+            return False
     
 
 if __name__ == '__main__':
