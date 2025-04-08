@@ -26,7 +26,7 @@ def set_working_directory_to_script():
     
     # Change the current working directory to the script's directory
     os.chdir(script_dir)
-    print(f"Working directory set to: {os.getcwd()}")
+    logger.info(f"Working directory set to: {os.getcwd()}")
 
 def get_yesterday_date():
     yesterday = datetime.datetime.now() - datetime.timedelta(days=1)
@@ -80,7 +80,7 @@ class Extract:
         
         return stations, readings
     
-    def save_raw_file(self, data, type, filename, date:str):
+    def save_raw_file(self, data, type, date:str):
         raw_data_file_path = os.path.join(self.config.get('DATA_FILE_PATH'), 'raw')
 
         file_path = os.path.join(raw_data_file_path, type)
@@ -89,7 +89,7 @@ class Extract:
             os.makedirs(file_path)
 
         try:
-            with open(os.path.join(file_path, f"{filename}.json"), 'w') as file:
+            with open(os.path.join(file_path, f"{date}.json"), 'w') as file:
                 json.dump(data, file, indent=4)
             
         except Exception as e:
@@ -105,7 +105,7 @@ class Extract:
                 raise ValueError("No stations data found")
             
             else:
-                self.save_raw_file(stations, type='stations', filename=f'stations_{date}', date=date)
+                self.save_raw_file(stations, type='stations', date=date)
                 logger.info("Raw stations data saved")
 
             if readings is None:
@@ -114,11 +114,11 @@ class Extract:
 
             
             else:
-                self.save_raw_file(readings, type='readings', filename=f'readings_{date}', date=date)
+                self.save_raw_file(readings, type='readings', date=date)
                 logger.info("Raw readings data saved")
 
             return True
-        
+            
         except ValueError as ve:
             # This block handles expected errors (e.g., missing data)
             logger.error(f"Data extraction error: {ve}")
@@ -148,16 +148,3 @@ if __name__ == '__main__':
     
     else:
         logger.error("Failed to extract data")
-
-
-
-
-
-
-
-
-
-
-
-
-
