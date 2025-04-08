@@ -26,7 +26,7 @@ def set_working_directory_to_script():
     
     # Change the current working directory to the script's directory
     os.chdir(script_dir)
-    print(f"Working directory set to: {os.getcwd()}")
+    logger.info(f"Working directory set to: {os.getcwd()}")
 
 def get_yesterday_date():
     yesterday = datetime.datetime.now() - datetime.timedelta(days=1)
