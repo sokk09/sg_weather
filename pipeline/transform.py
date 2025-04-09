@@ -64,6 +64,9 @@ class Transform:
 
         df = self.load_station_data_to_df(date=date)
 
+        # Convert all column names to lowercase
+        df.columns = df.columns.str.lower()
+
         #validate the datatype first
         self.validate_station_data(df)
         logger.info("All stations datatype match")
@@ -72,11 +75,14 @@ class Transform:
         df.rename(columns={'location.latitude': 'latitude', 'location.longitude': 'longitude'}, inplace=True)
         logger.info("Column name change")
 
+        # Convert all column names to lowercase
+        df.columns = df.columns.str.lower()
+
         return df
     
     def validate_station_data(self, df):
         assert df['id'].dtype == 'object', "id column should be of type object"
-        assert df['deviceId'].dtype == 'object', "deviceId column should be of type object"
+        assert df['deviceid'].dtype == 'object', "deviceId column should be of type object"
         assert df['name'].dtype == 'object', "name column should be of type object"
         assert df['location.latitude'].dtype == 'float', "latitude column should be of type string"
         assert df['location.longitude'].dtype == 'float', "longitude column should be of type string"
@@ -100,6 +106,9 @@ class Transform:
 
         df = self.load_readings_data_to_df(date=date)
 
+        # Convert all column names to lowercase
+        df.columns = df.columns.str.lower()
+
         df['timestamp'] = pd.to_datetime(df['timestamp']).dt.tz_localize(None)
         logger.info("Changed timestamp datatype")
 
@@ -110,7 +119,7 @@ class Transform:
         return df
     
     def validate_readings_data(self, df):
-        assert df['stationId'].dtype == 'object', "stationId column should be of type object"
+        assert df['stationid'].dtype == 'object', "stationId column should be of type object"
         assert df['value'].dtype == 'float', "deviceId column should be of type float"
         assert pd.api.types.is_datetime64_any_dtype(df['timestamp']), "name column should be of datetime object"
 

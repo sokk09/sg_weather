@@ -12,6 +12,6 @@ CREATE TABLE readings (
     timestamp timestamp,
     stationid VARCHAR REFERENCES stations (id),
     value NUMERIC,
-    PRIMARY KEY (timestamp, stationid)
+    PRIMARY KEY (timestamp, stationId)
     )
 ;
