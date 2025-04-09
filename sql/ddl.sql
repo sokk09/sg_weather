@@ -1,13 +1,3 @@
-CREATE TABLE raw_stations (
-    id VARCHAR,
-    deviceid VARCHAR,
-    name VARCHAR,
-    latitude VARCHAR,
-    longitude VARCHAR,
-    PRIMARY KEY (id)
-    )
-;
-
 CREATE TABLE stations (
     id VARCHAR,
     deviceid VARCHAR,
@@ -18,17 +8,9 @@ CREATE TABLE stations (
     )
 ;
 
-CREATE TABLE raw_readings (
-    timestamp VARCHAR,
-    stationid VARCHAR,
-    value VARCHAR,
-    PRIMARY KEY (timestamp, stationid)
-    )
-;
-
 CREATE TABLE readings (
     timestamp timestamp,
-    stationid VARCHAR,
+    stationid VARCHAR REFERENCES stations (id),
     value NUMERIC,
     PRIMARY KEY (timestamp, stationid)
     )
