@@ -37,6 +37,21 @@ class Extract:
         self.config = ConfigLoader(pipeline_env_file, docker_env_file)
         
     def fetch_data(self, date:str):
+        """
+        Extract data from API
+
+        Args:
+            date (str): Date of the data to extract in 'YYYY-MM-DD' format
+            
+        Raises:
+            ValueError: If data is empty
+            Exception: if fails to extract data from API
+        
+        Returns:
+            tuple: A tuple of list (stations, readings) containing the extracted data
+        
+        """
+
         api_url = self.config.get('API_URL')
 
         readings = []
@@ -70,17 +85,29 @@ class Extract:
                 
                 else:
                     logger.error(f"Failed to fetch data. Received status code {response.status_code}")
-                    return None
+                    raise ValueError
                 
                 count += 1
             
         except requests.exceptions.RequestException as e:
             logger.error(f"An error occurred when calling the API: {e}")
-            return None
+            raise
         
         return stations, readings
     
-    def save_raw_file(self, data, type, date:str):
+    def save_raw_file(self, data:str, type:str, date:str):
+        """
+        Save extracted data to the server as json file
+
+        Args:
+            data (list): list containing the extracted data
+            type (str): stations or readings
+            date (str): Date of the extracted data in 'YYYY-MM-DD' format
+            
+        Raises:
+            Exception: If data fail to save
+        
+        """
         raw_data_file_path = os.path.join(self.config.get('DATA_FILE_PATH'), 'raw')
 
         file_path = os.path.join(raw_data_file_path, type)
@@ -98,6 +125,17 @@ class Extract:
             
 
     def extract_and_process_data(self, date:str):
+        """
+        main function to extract and save the data
+
+        Args:
+            date (str): Date of the extracted data is 'YYYY-MM-DD' format
+            
+        Raises:
+            ValueError: If data is empty
+            Exceptions: Any other unexpected error
+        
+        """
         try:
             stations, readings = self.fetch_data(date)
 
@@ -123,12 +161,12 @@ class Extract:
         except ValueError as ve:
             # This block handles expected errors (e.g., missing data)
             logger.error(f"Data extraction error: {ve}")
-            return False
+            raise
 
         except Exception as e:
             # Catch any other unexpected errors
             logger.error(f"An unexpected error occurred during data extraction: {e}")
-            return False
+            raise
     
 
 if __name__ == '__main__':
@@ -143,9 +181,3 @@ if __name__ == '__main__':
 
     extract = Extract(pipeline_env_file='.env', docker_env_file='../docker/.env')
     data = extract.extract_and_process_data(process_date)
-
-    if data:
-        logger.info("Data extracted successfully")
-    
-    else:
-        logger.error("Failed to extract data")
