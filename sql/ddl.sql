@@ -10,7 +10,7 @@ CREATE TABLE raw_stations (
 
 CREATE TABLE raw_readings (
     timestamp timestamp,
-    stationid VARCHAR REFERENCES stations (id),
+    stationid VARCHAR,
     value NUMERIC,
     PRIMARY KEY (timestamp, stationId)
     )
