@@ -78,6 +78,9 @@ class Transform:
         # Convert all column names to lowercase
         df.columns = df.columns.str.lower()
 
+        #remove duplicates
+        df = df.drop_duplicates()
+
         return df
     
     def validate_station_data(self, df):
@@ -141,3 +144,6 @@ if __name__ == '__main__':
     transform = Transform(pipeline_env_file='.env', docker_env_file='../docker/.env')
 
     station_df, readings_df = transform.transform_data(date=process_date)
+
+    print(station_df[station_df['id']== 'S219'])
+
