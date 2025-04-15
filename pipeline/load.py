@@ -45,6 +45,18 @@ class Load:
         self.ALLOWED_RAW_TABLES = ['raw_stations', 'raw_readings']
     
     def connect_database(self):
+        """
+        Connects to postgresSQL Database
+
+        Args:
+            
+
+        Raises:
+            Exception: If fails to connect to database.
+
+        Returns:
+            engine: connection to Postgres
+        """
 
         try:
             conn_string = f"postgresql+psycopg2://{self.config.get('POSTGRES_USER')}:{self.config.get('POSTGRES_PASSWORD')}@" \
@@ -59,6 +71,16 @@ class Load:
             raise
     
     def truncate_raw(self, raw_table_name):
+        """
+        Truncates all data from the specified raw table.
+
+        Args:
+            raw_table_name (str): The name of the raw table to truncate.
+
+        Raises:
+            ValueError: If the table name is not in the allowed list.
+            Exception: If the database operation fails.
+        """
 
         sql = f"TRUNCATE TABLE {raw_table_name};"
 
@@ -73,7 +95,16 @@ class Load:
             raise
 
     def load_df_to_postgres(self, df, raw_table_name):
+        """
+        Loads DF to database
 
+        Args:
+            dataframe (df): Data to insert
+            raw_table_name: table which the data is to be inserted to
+
+        Raises:
+            Exception: If fails to connect to database.
+        """
         try:
             df.to_sql(raw_table_name, con=self.engine, if_exists='append', index=False)
             logger.info(f"Data loaded to {raw_table_name} successfully")
@@ -82,6 +113,15 @@ class Load:
             raise
     
     def merge_stations(self):
+        """
+        Upsert raw_stations data to stations table
+
+        Args:
+            
+
+        Raises:
+            Exception: If SQL statement failes to execute.
+        """
 
         sql = '''
             MERGE INTO stations AS target
@@ -108,6 +148,16 @@ class Load:
             raise
 
     def merge_readings(self):
+        """
+        Upsert raw_readings data to readings table
+
+        Args:
+            
+
+        Raises:
+            Exception: If SQL statement failes to execute.
+        """
+
         sql = '''
             MERGE INTO readings AS target
             USING raw_readings AS source
@@ -134,7 +184,13 @@ class Load:
     
     def close_connection(self):
         """
-        Close the database connection.
+        Close postgresSQL database connection
+
+        Args:
+            
+
+        Raises:
+            Exception: If fails to close connection.
         """
         try:
             self.engine.dispose()
@@ -144,6 +200,16 @@ class Load:
             raise
     
     def process_and_load_data(self, stations_df, readings_df):
+        """
+        Main functions that process and load data into database
+
+        Args:
+            stations_df (df): From transform.py, stations data to load to db
+            readings_df (df): From transform.py, readings data to load to db
+
+        Raises:
+            Exception: If any steps fail.
+        """
 
         try:
             #Truncate raw table first
@@ -158,24 +224,28 @@ class Load:
             self.merge_stations()
             self.merge_readings()
 
+            #close connection
+            self.close_connection()
+
             logger.info("Data successfully loaded")
         except Exception as e:
             logger.error(f"Error when loading data: {e}")
             raise
 
-set_working_directory_to_script()
+if __name__ == '__main__':
+    set_working_directory_to_script()
 
-parser = argparse.ArgumentParser()
-parser.add_argument('-d', '--date', type=str, default=get_yesterday_date(), help='Date')
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-d', '--date', type=str, default=get_yesterday_date(), help='Date')
 
-args = parser.parse_args()
+    args = parser.parse_args()
 
-process_date = args.date
-load = Load(pipeline_env_file='.env', docker_env_file='../docker/.env')
+    process_date = args.date
+    load = Load(pipeline_env_file='.env', docker_env_file='../docker/.env')
 
-# Step 1: Transform
-transform = Transform(pipeline_env_file='.env', docker_env_file='../docker/.env')
-stations_df, readings_df = transform.transform_data(date=process_date)
+    # Step 1: Transform
+    transform = Transform(pipeline_env_file='.env', docker_env_file='../docker/.env')
+    stations_df, readings_df = transform.transform_data(date=process_date)
 
-load.process_and_load_data(stations_df, readings_df)
+    load.process_and_load_data(stations_df, readings_df)
 

@@ -20,6 +20,17 @@ class ConfigLoader:
         self.load_config(pipeline_env_file, docker_env_file)
 
     def load_config(self, pipeline_env_file, docker_env_file):
+        """
+        load config from .env files
+
+        Args:
+            pipeline_env_file (file path): path of pipeline env file
+            docker_env_file (file path): path of docker env file
+            
+
+        Raises:
+            Exception: If env files fails to load.
+        """
 
         script_dir = os.path.dirname(os.path.realpath(__file__))  # Directory of this script
         pipeline_env_file = os.path.join(script_dir, pipeline_env_file)
@@ -51,6 +62,15 @@ class ConfigLoader:
         return self.config
     
     def validate_config(self):
+        """
+        validate config
+
+        Args:
+
+        Raises:
+            ValueError: If any of the required variables are not found.
+        """
+
         required = ['API_URL', 'POSTGRES_USER', 'POSTGRES_PASSWORD', 'POSTGRES_DB', 'DATA_FILE_PATH']
         for e in required:
             if not self.config.get(e):
@@ -61,8 +81,4 @@ class ConfigLoader:
     
     def get(self, key):
         return self.config.get(key)
-
-# if __name__ == '__main__':
-    # config = ConfigLoader(pipeline_env_file='.env', docker_env_file='../docker/.env')
-    # api_url = config.get('API_URL')
-    # print(api_url)
+    
