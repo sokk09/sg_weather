@@ -80,6 +80,7 @@ class Transform:
 
         #remove duplicates
         df = df.drop_duplicates()
+        logger.info("Removed duplicates")
 
         return df
     

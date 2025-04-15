@@ -91,6 +91,7 @@ class Extract:
         try:
             with open(os.path.join(file_path, f"{date}.json"), 'w') as file:
                 json.dump(data, file, indent=4)
+            logger.info(f"Data saved to {os.path.join(file_path, f'{date}.json')}")
             
         except Exception as e:
             logger.error(f"Error saving data to file: {e}")
