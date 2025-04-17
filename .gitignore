@@ -178,3 +178,6 @@ cython_debug/
 
 #docker log files
 /docker/logs
+
+#logs folder
+/logs

@@ -9,4 +9,8 @@ This project extracts rainfall data for Singapore from [Singapore's open data po
 ### Resources
 
 [Postgres Docker Setup](https://www.docker.com/blog/how-to-use-the-postgres-docker-official-image/)
+[Airflow Documentation](https://airflow.apache.org/docs/apache-airflow/stable/index.html)
+[Running Airflow in Docker](https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html)
+[Creating DAG](https://www.geeksforgeeks.org/how-to-create-first-dag-in-airflow/)
+
 
