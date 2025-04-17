@@ -14,18 +14,18 @@ This project uses the following technologies:
 
 ### Project Workflow
 
-## 1. Extract
+#### 1. Extract
 
 The data is extracted from the open data portal of Singapore using Python's requests library and APIs.
 
-## 2. Transform
+#### 2. Transform
 
 The extracted raw data is processed and transformed using Python and Pandas. This step involves:
     - Cleaning the data
     - Converting timestamp
     - Structuring the data from json to dataframe for loading into the database
 
-## 3. Load
+#### 3. Load
 The transformed data is loaded into a PostgresSQL database. Data is first loaded to a staging table then upserted to a final table.
 
 ### Future Improvements
