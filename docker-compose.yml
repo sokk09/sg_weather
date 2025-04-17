@@ -138,6 +138,8 @@ services:
       - ${AIRFLOW_PROJ_DIR:-.}/.env:/opt/airflow/.env
       # Mount the pipeline .env file
       - ${AIRFLOW_PROJ_DIR:-.}/pipeline/.env:/opt/airflow/pipeline/.env
+      - ${AIRFLOW_PROJ_DIR:-.}/pipeline:/opt/airflow/pipeline
+
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
       interval: 30s
@@ -164,6 +166,7 @@ services:
       - ${AIRFLOW_PROJ_DIR:-.}/.env:/opt/airflow/.env
       # Mount the pipeline .env file
       - ${AIRFLOW_PROJ_DIR:-.}/pipeline/.env:/opt/airflow/pipeline/.env
+      - ${AIRFLOW_PROJ_DIR:-.}/pipeline:/opt/airflow/pipeline
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:8974/health"]
       interval: 30s
@@ -190,6 +193,7 @@ services:
       - ${AIRFLOW_PROJ_DIR:-.}/.env:/opt/airflow/.env
       # Mount the pipeline .env file
       - ${AIRFLOW_PROJ_DIR:-.}/pipeline/.env:/opt/airflow/pipeline/.env
+      - ${AIRFLOW_PROJ_DIR:-.}/pipeline:/opt/airflow/pipeline
     healthcheck:
       # yamllint disable rule:line-length
       test:
