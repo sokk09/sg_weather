@@ -175,3 +175,9 @@ cython_debug/
 
 #data files
 /pipeline/data
+
+#docker log files
+/docker/logs
+
+#logs folder
+/logs
