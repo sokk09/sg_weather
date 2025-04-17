@@ -7,10 +7,10 @@ This project extracts rainfall data for Singapore from [Singapore's open data po
 <img width="1451" alt="image" src="https://github.com/user-attachments/assets/5d6d21b2-bb3b-4da8-8ce7-7c6e382a1541" />
 
 This project uses the following technologies:
-    - Docker: To containerize the services (PostgresSQL and Airflow)
-    - PostgresSQl: For storing the data
-    - Apache Airflow: For orchestrating the ETL pipeline
-    - Python: For processing the data
+- Docker: To containerize the services (PostgresSQL and Airflow)
+- PostgresSQl: For storing the data
+- Apache Airflow: For orchestrating the ETL pipeline
+- Python: For processing the data
 
 ### Project Workflow
 
@@ -21,9 +21,9 @@ The data is extracted from the open data portal of Singapore using Python's requ
 #### 2. Transform
 
 The extracted raw data is processed and transformed using Python and Pandas. This step involves:
-    - Cleaning the data
-    - Converting timestamp
-    - Structuring the data from json to dataframe for loading into the database
+* Cleaning the data
+* Converting timestamp
+* Structuring the data from json to dataframe for loading into the database
 
 #### 3. Load
 The transformed data is loaded into a PostgresSQL database. Data is first loaded to a staging table then upserted to a final table.
