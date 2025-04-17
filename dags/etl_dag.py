@@ -44,13 +44,16 @@ def run_transform(**kwargs):
     readings_df.to_pickle(f'/tmp/readings_{t_minus_1_date}.pkl')
 
 def run_load(**kwargs):
-    date = kwargs['ds']
+    
+    execution_date = kwargs['execution_date']
+    t_minus_1_date = (execution_date - timedelta(days=1)).strftime('%Y-%m-%d')  # Format as string
+
     load = Load(
         pipeline_env_file='/opt/airflow/pipeline/.env',
         docker_env_file='/opt/airflow/.env'
     )
-    stations_df = pd.read_pickle(f'/tmp/stations_{date}.pkl')
-    readings_df = pd.read_pickle(f'/tmp/readings_{date}.pkl')
+    stations_df = pd.read_pickle(f'/tmp/stations_{t_minus_1_date}.pkl')
+    readings_df = pd.read_pickle(f'/tmp/readings_{t_minus_1_date}.pkl')
 
     load.process_and_load_data(stations_df, readings_df)
 
