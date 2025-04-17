@@ -19,24 +19,29 @@ default_args = {
 }
 
 def run_extract(**kwargs):
-    date = kwargs['ds']
+    execution_date = kwargs['execution_date']
+    t_minus_1_date = (execution_date - timedelta(days=1)).strftime('%Y-%m-%d')  # Format as string
+
+    # Initialize extract and run extract with t-1 date
     extract = Extract(
-        pipeline_env_file='/opt/airflow/pipeline/.env',       # if you have it
+        pipeline_env_file='/opt/airflow/pipeline/.env',  # if you have it
         docker_env_file='/opt/airflow/.env'
     )
-    extract.extract_and_process_data(date)
+    extract.extract_and_process_data(t_minus_1_date)
 
 def run_transform(**kwargs):
-    date = kwargs['ds']
+    execution_date = kwargs['execution_date']
+    t_minus_1_date = (execution_date - timedelta(days=1)).strftime('%Y-%m-%d')  # Format as string
+
     transform = Transform(
         pipeline_env_file='/opt/airflow/pipeline/.env',
         docker_env_file='/opt/airflow/.env'
     )
-    stations_df, readings_df = transform.transform_data(date)
+    stations_df, readings_df = transform.transform_data(t_minus_1_date)
 
     # Save intermediate data for load step
-    stations_df.to_pickle(f'/tmp/stations_{date}.pkl')
-    readings_df.to_pickle(f'/tmp/readings_{date}.pkl')
+    stations_df.to_pickle(f'/tmp/stations_{t_minus_1_date}.pkl')
+    readings_df.to_pickle(f'/tmp/readings_{t_minus_1_date}.pkl')
 
 def run_load(**kwargs):
     date = kwargs['ds']
