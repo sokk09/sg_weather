@@ -38,9 +38,7 @@ The transformed data is loaded into a PostgresSQL database. Data is first loaded
 
 ### Resources
 
-[Postgres Docker Setup](https://www.docker.com/blog/how-to-use-the-postgres-docker-official-image/)
-[Airflow Documentation](https://airflow.apache.org/docs/apache-airflow/stable/index.html)
-[Running Airflow in Docker](https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html)
-[Creating DAG](https://www.geeksforgeeks.org/how-to-create-first-dag-in-airflow/)
-
-
+1. [Postgres Docker Setup](https://www.docker.com/blog/how-to-use-the-postgres-docker-official-image/)
+2. [Airflow Documentation](https://airflow.apache.org/docs/apache-airflow/stable/index.html)
+3. [Running Airflow in Docker](https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html)
+4. [Creating DAG](https://www.geeksforgeeks.org/how-to-create-first-dag-in-airflow/)
