@@ -60,7 +60,7 @@ def run_load(**kwargs):
 with DAG(
     dag_id='etl_pipeline_dag',
     default_args=default_args,
-    schedule_interval='@daily',
+    schedule_interval='0 9 * * *',  # At 06:00 every day
     catchup=False,
     tags=['etl', 'rainfall'],
 ) as dag:
